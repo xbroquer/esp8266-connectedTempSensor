@@ -145,7 +145,7 @@ wifi.eventmon.register(wifi.eventmon.STA_GOT_IP, function(T)
   else
     gpio.write(PARAMS.LED_BUILTIN, gpio.HIGH)
   end
-  tmr.alarm(timerReadAndSendTemp, 5000, 1, readAndSendTemp)
+  tmr.alarm(timerReadAndSendTemp, 1000*60*30, 1, readAndSendTemp)
 end)
 
 
