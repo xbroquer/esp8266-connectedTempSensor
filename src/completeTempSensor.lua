@@ -145,6 +145,8 @@ wifi.eventmon.register(wifi.eventmon.STA_GOT_IP, function(T)
   else
     gpio.write(PARAMS.LED_BUILTIN, gpio.HIGH)
   end
+  -- send data and start timer for the job
+  readAndSendTemp()
   tmr.alarm(timerReadAndSendTemp, 1000*60*30, 1, readAndSendTemp)
 end)
 
