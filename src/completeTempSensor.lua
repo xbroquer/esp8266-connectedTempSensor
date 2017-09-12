@@ -42,7 +42,7 @@ function sendTempToThingSpeak(tempIn)
           "field1="..t, 
           0, 
           0, 
-          function(client) print("Temperature sent") end)
+          function(client) print("Temperature " .. tempIn .. " sent") end)
     end,
     function(client, reason)
       print("failed reason: " .. reason)
@@ -50,22 +50,16 @@ function sendTempToThingSpeak(tempIn)
     status = m:close()
 end
 
-function readTemp()
-    -- read all sensors and print all measurement results
-    temperature = -1
-    ds18b20.read(
-        function(ind,rom,res,temp,tdec,par)
-            --print(ind,string.format("%02X:%02X:%02X:%02X:%02X:%02X:%02X:%02X",string.match(rom,"(%d+):(%d+):(%d+):(%d+):(%d+):(%d+):(%d+):(%d+)")),res,temp,tdec,par)
-            temperature = temp
-             print("temperature is "..temperature)
-        end,{});
-   return   temperature   
-end
 
 function readAndSendTemp()
-    sendTempToThingSpeak(readTemp())
+    -- read all sensors and send measurement result to thingSpeak
+    ds18b20.read(
+        function(ind,rom,res,temp,tdec,par)
+            print(ind,string.format("%02X:%02X:%02X:%02X:%02X:%02X:%02X:%02X",string.match(rom,"(%d+):(%d+):(%d+):(%d+):(%d+):(%d+):(%d+):(%d+)")),res,temp,tdec,par)
+            print("Temperature is "..temp)
+            sendTempToThingSpeak(temp)
+        end,{});
 end
-
 
 _WIFI_CURRENT_AP = 1
 _WIFI_FAIL_COUNTER = 0
